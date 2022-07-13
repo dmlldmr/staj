@@ -1,0 +1,36 @@
+import pandas as pd
+from xlrd import open_workbook
+data = open_workbook("Data.xlsx")
+dt = pd.read_excel("Data.xlsx")
+sayfa = data.sheet_by_index(0)
+dorduncusutun = sayfa.col_values(3,1)
+asil = []
+for i in dorduncusutun:
+  if i not in asil:
+    asil.append(i)
+birincisutun = sayfa.col_values(0,1)
+asil1= []
+for i in birincisutun:
+  if i not in asil1:
+    asil1.append(i)
+i = 16
+j=0  
+sonuc = []
+while j < len(asil1): 
+    tmp = asil[i]     
+    a = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == tmp)& (dt["Olgu Numarası"]==asil1[j])] 
+    sonuc= sonuc + [len(a)] 
+    j+=1   
+     
+
+print(sonuc)
+print(len(sonuc))
+print(sum(sonuc))
+toplam =0
+
+for i in sonuc:
+  if i!=0:
+    toplam+=1
+  
+print(toplam)
+
