@@ -1,0 +1,95 @@
+import pandas as pd
+import xlsxwriter 
+
+
+planWorkbook = xlsxwriter.Workbook("DataSonuc1.xlsx")
+planSheet = planWorkbook.add_worksheet("Sonuc1")
+
+
+dt = pd.read_excel("Data.xlsx")
+
+#-------------------APANDİKS-----------------------
+apandiks1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Apendikolit")]
+#print(apandiks1) 293 rows
+apandiks2 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Akut apandisit ile uyumlu")]
+#print(apandiks2) 5559 rows
+apandiks = (len(apandiks1) + len(apandiks2))
+
+
+#-------------------SAFRA KESESİ-------------------
+safra1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Safra kesesi taşı")]
+#print(safra1) 1594 rows
+safra2 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Akut kolesistit ile uyumlu")]
+#print(safra2) 4925 rows
+safrakesesi = (len(safra1) + len(safra2))
+
+
+#----------------------PANKREAS--------------------
+pankreas1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Akut pankreatit ile uyumlu")]
+#print(pankreas) 6923 rows
+pankreas = len(pankreas1)
+
+#----------------------KOLON-----------------------
+kolon1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Akut divertikülit ile uyumlu")]
+#print(kolon1)  1148 rows
+kolon2 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Kalsifiye divertikül")]
+#print(kolon2) 73 rows
+kolon = (len(kolon1) + len(kolon2))
+
+
+#---------------------BÖBREK-ÜRETER-MESANE----------
+bum1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Böbrek taşı")]
+#print(bum1) 1928 rows
+bum2 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Böbrek-Mesane")]
+#print(bum2) 0 rows
+bum3 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Üreter taşı")]
+#print(bum3) 628 rows
+bum = (len(bum1) + len(bum2) + len(bum3))
+
+
+#-------------------ABDOMİNAL AORTA-----------------
+abda1 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Abdominal aort anevrizma")]
+#print(abda1) 9003 rows
+abda2 = dt.loc[(dt["Tip"] == "BB") & (dt["Koordinatlar"] != "") & (dt["Sınıf"] == "Abdominal aort diseksiyon")]
+#print(abda2) 814 rows
+abda = (len(abda1) + len(abda2))
+
+ 
+
+
+hastalik = [
+    "Apandiks",
+    "Safra kesesi",
+    "Pankreas",
+    "Kolon",
+    "BUM",
+    "Abdom. Aort"]
+
+
+toplam = [
+    apandiks,
+    safrakesesi,
+    pankreas,
+    kolon,
+    bum,
+    abda]
+
+planSheet.write(0,0, "HASTALIK")
+planSheet.write(0,1, "TOPLAM")
+
+planSheet.write(1,0, hastalik[0])
+planSheet.write(2,0, hastalik[1])
+planSheet.write(3,0, hastalik[2])
+planSheet.write(4,0, hastalik[3])
+planSheet.write(5,0, hastalik[4])
+planSheet.write(6,0, hastalik[5])
+
+planSheet.write(1,1, toplam[0])
+planSheet.write(2,1, toplam[1])
+planSheet.write(3,1, toplam[2])
+planSheet.write(4,1, toplam[3])
+planSheet.write(5,1, toplam[4])
+planSheet.write(6,1, toplam[5])
+
+
+planWorkbook.close()
